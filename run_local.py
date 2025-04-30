@@ -7,6 +7,7 @@ import os
 import sys
 import subprocess
 import webbrowser
+import time
 from pathlib import Path
 
 def main():
@@ -20,9 +21,10 @@ def main():
     cmd = [
         "pygbag",
         "--port", "8000",
-        "--app_name", "Online Pygame Demo",  # Fixed: changed from --app-name to --app_name
+        "--app_name", "Online Pygame Demo",
         "--ume_block", "0",    # No user media engagement block (no click required to start)
-        "--no_opt",            # Fixed: changed from --no-opt to --no_opt
+        "--width", "800",
+        "--height", "600",
         "main.py"
     ]
     
@@ -30,6 +32,10 @@ def main():
     
     # Start pygbag
     process = subprocess.Popen(cmd)
+    
+    # Wait a moment to give server time to start
+    print("Waiting for server to start...")
+    time.sleep(2)
     
     # Open browser after a short delay
     try:

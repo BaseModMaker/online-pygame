@@ -2,9 +2,7 @@
 app_name = "Online Pygame Demo"
 archive = "online-pygame"
 build_path = "./build"
-ume_block = 0  # No user media engagement block
-autorun = 1    # Start automatically 
-holdon = 0     # Don't wait for interaction
+ume_block = 0       # No user media engagement block
 width = 800
 height = 600
-debug = true   # Enable debug mode for better error messages
+debug = true        # Enable debug mode for better error messages

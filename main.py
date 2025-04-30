@@ -41,9 +41,6 @@ DEBUG = os.environ.get('PYGBAG_DEBUG', '0') == '1'
 # Detect if we're running in browser or locally
 RUNNING_IN_BROWSER = platform.system() == 'Emscripten'
 
-# Force showing startup screen - set to False to disable startup message
-ALWAYS_SHOW_STARTUP = False
-
 # Game state
 GAME_STATE_START_MENU = 0
 GAME_STATE_PLAYING = 1
@@ -63,8 +60,6 @@ class Button:
         self.color = color
         self.hover_color = hover_color
         self.current_color = color
-        self.text_surface = font.render_to(pygame.Surface((width, height), pygame.SRCALPHA), 
-                                         (width//2 - len(text)*8, height//2 - 15), text, WHITE)
         
     def draw(self, screen):
         pygame.draw.rect(screen, self.current_color, self.rect, border_radius=10)
@@ -89,8 +84,9 @@ class Button:
 async def main():
     print_debug("Game starting...")
     
-    # Set up the game window
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    # Create the screen with appropriate flags
+    flags = pygame.SRCALPHA
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), flags)
     pygame.display.set_caption("Online Pygame Demo")
     clock = pygame.time.Clock()
     
@@ -103,12 +99,14 @@ async def main():
     player_y = HEIGHT - 2 * player_size
     enemies = []
     score = 0
-    game_over = False
     spawn_timer = 0
     
     # Main game loop
     running = True
     game_state = GAME_STATE_START_MENU
+    
+    # For Pygbag web version - this indicates the game has loaded
+    print("PYGAME RUNNING")
     
     print_debug(f"Running in browser: {RUNNING_IN_BROWSER}")
     
@@ -133,6 +131,7 @@ async def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if game_state == GAME_STATE_START_MENU and start_button.is_hovered(mouse_pos):
                     game_state = GAME_STATE_PLAYING
+                    print_debug("Game started!")
                 elif game_state == GAME_STATE_GAME_OVER and restart_button.is_hovered(mouse_pos):
                     # Reset the game
                     player_x = WIDTH // 2 - player_size // 2
@@ -156,6 +155,12 @@ async def main():
             inst_rect = font.get_rect(inst_text)
             font.render_to(screen, (WIDTH//2 - inst_rect.width//2, HEIGHT//4 + 50), 
                         inst_text, WHITE)
+            
+            # Draw click instruction for clarity
+            click_text = "Click the button below to start"
+            click_rect = font.get_rect(click_text)
+            font.render_to(screen, (WIDTH//2 - click_rect.width//2, HEIGHT//4 + 100), 
+                        click_text, WHITE)
             
             # Update and draw start button
             start_button.update(mouse_pos)
@@ -213,7 +218,7 @@ async def main():
                          final_score_text, WHITE)
             
             # Draw instruction to restart
-            space_text = "Press SPACE to restart"
+            space_text = "Press SPACE or click button to restart"
             space_rect = font.get_rect(space_text)
             font.render_to(screen, (WIDTH//2 - space_rect.width//2, HEIGHT//3 + 90), 
                          space_text, WHITE)
