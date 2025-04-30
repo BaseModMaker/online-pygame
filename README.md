@@ -11,7 +11,7 @@ A simple game made with Pygame that can be played directly in a web browser.
 
 ## Play Online
 
-Once deployed, the game will be available at: `https://[your-username].github.io/online-pygame/`
+Once deployed, the game will be available at: `https://basemodmaker.github.io/online-pygame/`
 
 ## Local Development
 
