@@ -1,45 +1,33 @@
-# Online Pygame Demo
+# Deploy pygames
 
-A simple game made with Pygame that can be played directly in a web browser.
+Deploy your pygames code to GitHub Pages with just a push
 
-## How to Play
+## Gameplay
 
-- **Controls**: Use the left and right arrow keys to move your character
-- **Objective**: Avoid the falling red blocks
-- **Scoring**: Each block you successfully avoid adds to your score
-- **Game Over**: If you hit a block, press SPACE to restart
+### PC
 
-## Play Online
+![PC Gameplay](./images/gameplay.gif)
 
-Once deployed, the game will be available at: `https://basemodmaker.github.io/online-pygame/`
+### Mobile
 
-## Local Development
+![Moblie Gameplay](./images/mobile_version.gif)
 
-To run the game locally:
+## Setup Environment for local
 
-1. Install the required packages:
-   ```
-   pip install pygame pygbag
-   ```
+### Create a venv
 
-2. Run the game:
-   ```
-   python main.py
-   ```
+`python3 -m venv venv`
 
-3. Test the web version:
-   ```
-   pygbag main.py
-   ```
-   Then open your browser to `http://localhost:8000`
+### Install all Python packages
 
-## How It Works
+`pip install -r requirements.txt`
 
-This game uses:
-- Pygame for game logic and rendering
-- Pygbag to compile the Python code to WebAssembly
-- GitHub Actions for automatic deployment to GitHub Pages
+### Run the game
 
-## License
+`python3 main.py`
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Web - runs on port localhost:8000
+
+Note: Assuming you've the game in a separate folder
+
+`python3 -m pygbag space_invaders/`
