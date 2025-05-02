@@ -12,14 +12,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Build with Pygbag
       run: |
             echo "Attempting to install pygbag"
+            python -m pip install --upgrade pip
             python -m pip install pygbag
             echo "Successfully installed pygbag"
             echo "Attempting to build the game"
             python -m pygbag --build $GITHUB_WORKSPACE/space_invaders/main.py
-            echo "Successfully build the game and complied to WebAssembly"
+            echo "Successfully built the game and compiled to WebAssembly"
 
     - name : "Upload to GitHub pages branch gh-pages"
       uses: JamesIves/github-pages-deploy-action@4.1.7
