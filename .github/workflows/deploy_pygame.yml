@@ -11,25 +11,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'
+        
+    - name: Install dependencies
+      run: |
+        echo "Installing dependencies..."
+        python -m pip install --upgrade pip
+        if [ -f space_invaders/requirements.txt ]; then
+          python -m pip install -r space_invaders/requirements.txt
+        fi
+        python -m pip install pygame-ce pygbag
+        echo "Dependencies installed successfully."
+        
+    - name: List workspace content
+      run: |
+        echo "Listing workspace content for debugging:"
+        ls -la $GITHUB_WORKSPACE
+        ls -la $GITHUB_WORKSPACE/space_invaders
+        ls -la $GITHUB_WORKSPACE/space_invaders/images || echo "No images directory"
+        ls -la $GITHUB_WORKSPACE/space_invaders/sounds || echo "No sounds directory"
+        ls -la $GITHUB_WORKSPACE/space_invaders/fonts || echo "No fonts directory"
         
     - name: Build with Pygbag
       run: |
-            echo "Attempting to install pygbag"
-            python -m pip install --upgrade pip
-            python -m pip install pygbag
-            echo "Successfully installed pygbag"
-            echo "Attempting to build the game"
-            python -m pygbag --build $GITHUB_WORKSPACE/space_invaders/main.py
-            echo "Successfully built the game and compiled to WebAssembly"
+        echo "Attempting to build the game with pygbag..."
+        cd $GITHUB_WORKSPACE
+        python -m pygbag --build space_invaders/main.py
+        echo "Pygbag build complete!"
+        echo "Checking build output directories:"
+        ls -la space_invaders/build || echo "No build directory found"
+        ls -la space_invaders/build/web || echo "No web directory found in build"
 
-    - name : "Upload to GitHub pages branch gh-pages"
-      uses: JamesIves/github-pages-deploy-action@4.1.7
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.4.1
       with:
         branch: gh-pages
         folder: space_invaders/build/web
+        clean: true
+        token: ${{ github.token }}
+        
+    - name: Output Pages URL
+      run: |
+        echo "✅ Deployment complete!"
+        echo "📝 Your game should be available at: https://$(echo $GITHUB_REPOSITORY | cut -d "/" -f 1).github.io/$(echo $GITHUB_REPOSITORY | cut -d "/" -f 2)/"
