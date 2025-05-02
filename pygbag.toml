@@ -1,8 +1,25 @@
-# Configuration for pygbag
+# Pygbag configuration file
+
+# Application settings
 app_name = "Online Pygame Demo"
-archive = "online-pygame"
-build_path = "./build"
-ume_block = 0       # No user media engagement block
+filename = "main.py"
+version = "1.0"
+url = "https://basemodmaker.github.io/online-pygame/"
+
+# Display settings
 width = 800
 height = 600
-debug = true        # Enable debug mode for better error messages
+renderer = "canvas"  # canvas or webgl, canvas is more compatible
+
+# Browser behavior
+ume_block = 0  # No block for user media engagement
+can_close = 1  # Allow window to be closed
+archive = "online-pygame"
+
+# Advanced settings
+# These settings help with loading and performance
+package = "web.pygame.online-pygame"
+autorun = 1  # Start game automatically
+
+# Debug settings (0=off, 1=on)
+debug = 0

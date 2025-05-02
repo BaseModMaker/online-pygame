@@ -49,7 +49,7 @@ game_state = GAME_STATE_START_MENU
 
 def print_debug(message):
     """Print debug messages if debug mode is on"""
-    if DEBUG:
+    if DEBUG or True:  # Always print debug for now to help troubleshoot
         print(f"[DEBUG] {message}")
 
 # Button class to create interactive buttons
@@ -84,6 +84,17 @@ class Button:
 async def main():
     print_debug("Game starting...")
     
+    # Special handling for web environment
+    if RUNNING_IN_BROWSER:
+        print_debug("Running in browser environment")
+        # Try to signal readiness for web display
+        try:
+            import js
+            print_debug("JavaScript module imported")
+            js.document.title = "Online Pygame - Ready"
+        except ImportError:
+            print_debug("JavaScript module not available")
+    
     # Create the screen with appropriate flags
     flags = pygame.SRCALPHA
     screen = pygame.display.set_mode((WIDTH, HEIGHT), flags)
@@ -107,8 +118,10 @@ async def main():
     
     # For Pygbag web version - this indicates the game has loaded
     print("PYGAME RUNNING")
-    
     print_debug(f"Running in browser: {RUNNING_IN_BROWSER}")
+    
+    # Announce that the game is ready (helps with web detection)
+    print("GAME READY TO DISPLAY")
     
     while running:
         mouse_pos = pygame.mouse.get_pos()
