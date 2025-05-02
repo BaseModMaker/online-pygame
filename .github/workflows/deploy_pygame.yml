@@ -6,18 +6,22 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 jobs:
-  build-pygbag:
+  build-deploy:
     name: Sandy Inspires - Space Invaders Game
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -37,36 +41,25 @@ jobs:
         
     - name: List workspace content
       run: |
-        echo "Listing workspace content for debugging:"
-        ls -la $GITHUB_WORKSPACE
+        echo "Listing workspace content:"
         ls -la $GITHUB_WORKSPACE/space_invaders
-        ls -la $GITHUB_WORKSPACE/space_invaders/images || echo "No images directory"
-        ls -la $GITHUB_WORKSPACE/space_invaders/sounds || echo "No sounds directory"
-        ls -la $GITHUB_WORKSPACE/space_invaders/fonts || echo "No fonts directory"
         
     - name: Build with Pygbag
       run: |
-        echo "Attempting to build the game with pygbag..."
+        echo "Building with pygbag..."
         cd $GITHUB_WORKSPACE
         python -m pygbag --build space_invaders/main.py
-        echo "Pygbag build complete!"
-        echo "Checking build output directories:"
-        ls -la space_invaders/build || echo "No build directory found"
-        ls -la space_invaders/build/web || echo "No web directory found in build"
+        echo "Build complete - checking output:"
+        ls -la space_invaders/build/web
 
     - name: Setup Pages
-      uses: actions/configure-pages@v3
+      uses: actions/configure-pages@v4
       
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-pages-artifact@v3
       with:
         path: 'space_invaders/build/web'
         
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v2
-      
-    - name: Output Pages URL
-      run: |
-        echo "✅ Deployment complete!"
-        echo "📝 Your game should be available at: https://$(echo $GITHUB_REPOSITORY | cut -d "/" -f 1).github.io/$(echo $GITHUB_REPOSITORY | cut -d "/" -f 2)/"
+      uses: actions/deploy-pages@v4
