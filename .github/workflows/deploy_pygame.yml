@@ -5,13 +5,19 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build-pygbag:
     name: Sandy Inspires - Space Invaders Game
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -48,14 +54,18 @@ jobs:
         ls -la space_invaders/build || echo "No build directory found"
         ls -la space_invaders/build/web || echo "No web directory found in build"
 
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.4.1
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
       with:
-        branch: gh-pages
-        folder: space_invaders/build/web
-        clean: true
-        token: ${{ github.token }}
+        path: 'space_invaders/build/web'
         
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+      
     - name: Output Pages URL
       run: |
         echo "✅ Deployment complete!"
