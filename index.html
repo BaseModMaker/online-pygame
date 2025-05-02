@@ -3,10 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Pygame Game</title>
-    <meta http-equiv="refresh" content="0; url=build/web/index.html">
+    <title>Online Pygame Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #333;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        .game-container {
+            display: inline-block;
+            margin: 20px 0;
+            position: relative;
+            width: 800px;
+            height: 600px;
+            max-width: 100%;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        #canvas {
+            width: 100%;
+            height: 100%;
+            background-color: black; /* Make sure we have a black background */
+        }
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            z-index: 100;
+        }
+        .instructions {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
 <body>
-    <p>If you are not redirected automatically, <a href="build/web/index.html">click here to play the game</a>.</p>
+    <div class="container">
+        <h1>Online Pygame Demo</h1>
+        <div class="game-container">
+            <div id="canvas"></div>
+            <div class="loading">Loading game...</div>
+        </div>
+        
+        <div class="instructions">
+            <p>Controls: Left/Right arrows to move. Avoid the falling blocks!</p>
+            <p>Press SPACE to restart after game over. ESC to quit.</p>
+        </div>
+    </div>
+    
+    <!-- The main.js script is injected by pygbag when using the web build -->
 </body>
 </html>
