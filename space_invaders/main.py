@@ -23,14 +23,14 @@ from pygame import (
     key,
 )
 import sys
-from os.path import abspath, dirname
+from os.path import abspath, dirname, join
 from random import choice
 import asyncio
 
 BASE_PATH = abspath(dirname(__file__))
-FONT_PATH = BASE_PATH + "/fonts/"
-IMAGE_PATH = BASE_PATH + "/images/"
-SOUND_PATH = BASE_PATH + "/sounds/"
+FONT_PATH = join(BASE_PATH, "fonts")
+IMAGE_PATH = join(BASE_PATH, "images")
+SOUND_PATH = join(BASE_PATH, "sounds")
 SOUND_FORMAT = "ogg"
 
 
@@ -43,7 +43,7 @@ PURPLE = (203, 0, 255)
 RED = (237, 28, 36)
 
 SCREEN = display.set_mode((800, 600))
-FONT = FONT_PATH + "space_invaders.ttf"
+FONT = join(FONT_PATH, "space_invaders.ttf")
 IMG_NAMES = [
     "ship",
     "mystery",
@@ -60,7 +60,7 @@ IMG_NAMES = [
     "enemylaser",
 ]
 IMAGES = {
-    name: image.load(IMAGE_PATH + "{}.png".format(name)).convert_alpha()
+    name: image.load(join(IMAGE_PATH, f"{name}.png")).convert_alpha()
     for name in IMG_NAMES
 }
 
@@ -251,7 +251,7 @@ class Mystery(sprite.Sprite):
         self.moveTime = 25000
         self.direction = 1
         self.timer = time.get_ticks()
-        self.mysteryEntered = mixer.Sound(SOUND_PATH + f"mysteryentered.{SOUND_FORMAT}")
+        self.mysteryEntered = mixer.Sound(join(SOUND_PATH, f"mysteryentered.{SOUND_FORMAT}"))
         self.mysteryEntered.set_volume(0.3)
         self.playSound = True
 
@@ -367,7 +367,7 @@ class SpaceInvaders(object):
         self.clock = time.Clock()
         self.caption = display.set_caption("Space Invaders")
         self.screen = SCREEN
-        self.background = image.load(IMAGE_PATH + "background.jpg").convert()
+        self.background = image.load(join(IMAGE_PATH, "background.jpg")).convert()
         self.startGame = False
         self.mainScreen = True
         self.gameOver = False
@@ -432,12 +432,12 @@ class SpaceInvaders(object):
             "shipexplosion",
         ]:
             self.sounds[sound_name] = mixer.Sound(
-                SOUND_PATH + "{}.{}".format(sound_name, SOUND_FORMAT)
+                join(SOUND_PATH, f"{sound_name}.{SOUND_FORMAT}")
             )
             self.sounds[sound_name].set_volume(0.2)
 
         self.musicNotes = [
-            mixer.Sound(SOUND_PATH + "{}.{}".format(i, SOUND_FORMAT)) for i in range(4)
+            mixer.Sound(join(SOUND_PATH, f"{i}.{SOUND_FORMAT}")) for i in range(4)
         ]
         for sound in self.musicNotes:
             sound.set_volume(0.5)

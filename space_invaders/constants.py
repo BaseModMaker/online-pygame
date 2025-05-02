@@ -1,11 +1,11 @@
 from pygame import display, image
-from os.path import abspath, dirname
+from os.path import abspath, dirname, join
 
 # loading base paths
 BASE_PATH = abspath(dirname(__file__))
-FONT_PATH = BASE_PATH + "\\fonts\\"
-IMAGE_PATH = BASE_PATH + "\\images\\"
-SOUND_PATH = BASE_PATH + "\\audio\\"
+FONT_PATH = join(BASE_PATH, "fonts")
+IMAGE_PATH = join(BASE_PATH, "images")
+SOUND_PATH = join(BASE_PATH, "sounds")
 
 # Colors (R, G, B)
 WHITE = (255, 255, 255)
@@ -16,7 +16,7 @@ PURPLE = (203, 0, 255)
 RED = (237, 28, 36)
 
 SCREEN = display.set_mode((800, 600))
-FONT = FONT_PATH + "space_invaders.ttf"
+FONT = join(FONT_PATH, "space_invaders.ttf")
 IMG_NAMES = [
     "ship",
     "mystery",
@@ -33,7 +33,7 @@ IMG_NAMES = [
     "enemylaser",
 ]
 IMAGES = {
-    name: image.load(IMAGE_PATH + "{}.png".format(name)).convert_alpha()
+    name: image.load(join(IMAGE_PATH, f"{name}.png")).convert_alpha()
     for name in IMG_NAMES
 }
 
